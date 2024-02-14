@@ -1,13 +1,20 @@
-require('dotenv').config()
+require("dotenv").config();
 const express = require("express");
+
+const passport = require("./auth");
+
 const bodyParser = require("body-parser");
+
 const db = require("./db");
 const app = express();
-PORT=process.env.PORT ||3000
+PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
-app.get('/',(req,res)=>{
-  res.send("welcome to my hotel")
-})
+
+const localAuthMiddleware = passport.authenticate("local", { session: false });
+app.use(passport.initialize());
+app.get("/", (req, res) => {
+  res.send("welcome to my hotel");
+});
 
 //import routes file
 
@@ -17,14 +24,15 @@ const personRoutes = require("./Routes/personRoutes");
 app.use("/person", personRoutes);
 
 //menuItem-routes
-const menuRoutes=require("./Routes/menuitemsRoutes")
+const menuRoutes = require("./Routes/menuitemsRoutes");
 //use the router
-app.use('/menu',menuRoutes)
-const userRoutes=require('./Routes/userRoutes')
-app.use('/user',userRoutes)
+app.use("/menu", localAuthMiddleware, menuRoutes);
+const userRoutes = require("./Routes/userRoutes");
+app.use("/user", userRoutes);
 //register
-const registerRoutes=require('./Routes/RegisterRouter')
-app.use('/register',registerRoutes)
+const registerRoutes = require("./Routes/RegisterRouter");
+const Person = require("./models/Person-Model");
+app.use("/register", registerRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is listen ${PORT}`);
