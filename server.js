@@ -26,12 +26,12 @@ app.use("/person", personRoutes);
 //menuItem-routes
 const menuRoutes = require("./Routes/menuitemsRoutes");
 //use the router
-app.use("/menu", localAuthMiddleware, menuRoutes);
+app.use("/menu",  menuRoutes);
 const userRoutes = require("./Routes/userRoutes");
 app.use("/user", userRoutes);
 //register
 const registerRoutes = require("./Routes/RegisterRouter");
-const Person = require("./models/Person-Model");
+
 app.use("/register", registerRoutes);
 
 app.listen(PORT, () => {

@@ -8,7 +8,6 @@ router.post("/", async (req, res) => {
     const newUser = new usermodel(userdata);
     const response = await newUser.save();
     res.status(200).json(response);
-    console.log("user data model is create");
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "internal server error" });
@@ -18,7 +17,7 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const data = await usermodel.find();
-    console.log("data feteched is user model", data);
+
     res.status(200).json(data);
   } catch (error) {
     console.log(error);
@@ -37,7 +36,7 @@ router.put("/:id", async (req, res) => {
     if (!response) {
       res.status(404).json({ message: "user not found" });
     }
-    console.log("data update from usermodel");
+
     res.status(200).json(response);
   } catch (error) {
     console.log(error);
@@ -52,7 +51,7 @@ router.delete("/:id", async (req, res) => {
     if (!response) {
       res.status(404).json({ message: "user not found" });
     }
-    console.log("data delete from usermodel");
+
     res.status(200).json({ message: "user delete from user model" });
   } catch (error) {
     console.log(error);
